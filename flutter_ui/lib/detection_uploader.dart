@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+<<<<<<< HEAD
 import 'package:aws_s3_upload_lite/aws_s3_upload_lite.dart';
 import 'prediction_page.dart';
 
@@ -14,6 +15,18 @@ class UploadFileType {
     required this.icon,
     required this.s3Path,
     required this.fileType,
+=======
+import 'dart:math';
+import 'prediction_page.dart';
+
+class FileType {
+  final String name;
+  final IconData icon;
+
+  const FileType({
+    required this.name,
+    required this.icon,
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   });
 }
 
@@ -28,6 +41,7 @@ class _DetectionUploaderState extends State<DetectionUploader> {
   bool _isUploading = false;
   final List<PlatformFile?> _selectedFiles = List.filled(3, null);
   final List<double> _uploadProgress = List.filled(3, 0.0);
+<<<<<<< HEAD
   final List<String?> _uploadErrors = List.filled(3, null);
 
   final List<UploadFileType> _fileTypes = const [
@@ -51,6 +65,40 @@ class _DetectionUploaderState extends State<DetectionUploader> {
     ),
   ];
 
+=======
+  final _random = Random();
+
+  final List<FileType> _fileTypes = const [
+    FileType(
+      name: '帳戶資料',
+      icon: Icons.account_balance,
+    ),
+    FileType(
+      name: '用戶資料',
+      icon: Icons.person,
+    ),
+    FileType(
+      name: '交易資料',
+      icon: Icons.receipt_long,
+    ),
+  ];
+
+  Future<void> _simulateFileUpload(int index, PlatformFile file) async {
+    final delay = Duration(milliseconds: 30 + _random.nextInt(70));
+    final increment = 0.005 + _random.nextDouble() * 0.015;
+
+    var progress = 0.0;
+    while (progress < 1.0) {
+      if (!mounted) return;
+      progress = min(1.0, progress + increment);
+      setState(() {
+        _uploadProgress[index] = progress;
+      });
+      await Future.delayed(delay);
+    }
+  }
+
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   Future<void> _pickFile(int index) async {
     try {
       final result = await FilePicker.platform.pickFiles();
@@ -59,7 +107,10 @@ class _DetectionUploaderState extends State<DetectionUploader> {
 
       setState(() {
         _selectedFiles[index] = result.files.first;
+<<<<<<< HEAD
         _uploadProgress[index] = 0.0;
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
       });
     } catch (e) {
       if (mounted) {
@@ -70,7 +121,11 @@ class _DetectionUploaderState extends State<DetectionUploader> {
     }
   }
 
+<<<<<<< HEAD
   Future<void> _startUpload() async {
+=======
+  Future<void> _simulateUpload() async {
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
     if (_selectedFiles.every((file) => file == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('請至少選擇一個檔案')),
@@ -80,6 +135,7 @@ class _DetectionUploaderState extends State<DetectionUploader> {
 
     setState(() {
       _isUploading = true;
+<<<<<<< HEAD
       _uploadErrors.fillRange(0, _uploadErrors.length, null);
     });
 
@@ -163,13 +219,66 @@ class _DetectionUploaderState extends State<DetectionUploader> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('上傳過程發生錯誤：${e.toString()}')),
       );
+=======
+      for (var i = 0; i < _uploadProgress.length; i++) {
+        _uploadProgress[i] = 0.0;
+      }
+    });
+
+    try {
+      await Future.wait(
+        _selectedFiles.asMap().entries.map((entry) async {
+          final index = entry.key;
+          final file = entry.value;
+          if (file == null) return;
+          await _simulateFileUpload(index, file);
+        }),
+      );
+
+      setState(() {
+        _isUploading = false;
+        for (var i = 0; i < _selectedFiles.length; i++) {
+          _selectedFiles[i] = null;
+        }
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('檔案上傳完成')),
+        );
+
+        // 跳轉到預測頁面
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const PredictionPage(),
+              ),
+            );
+          }
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isUploading = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('上傳過程發生錯誤：${e.toString()}')),
+        );
+      }
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
     }
   }
 
   Widget _buildFileSelector(int index) {
     final file = _selectedFiles[index];
     final progress = _uploadProgress[index];
+<<<<<<< HEAD
     final error = _uploadErrors[index];
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
     final fileType = _fileTypes[index];
 
     return ListTile(
@@ -185,7 +294,11 @@ class _DetectionUploaderState extends State<DetectionUploader> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
+<<<<<<< HEAD
                 if (_isUploading && error == null) ...[
+=======
+                if (_isUploading) ...[
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
                   const SizedBox(height: 4),
                   LinearProgressIndicator(
                     value: progress,
@@ -197,6 +310,7 @@ class _DetectionUploaderState extends State<DetectionUploader> {
                     style: const TextStyle(fontSize: 12),
                   ),
                 ],
+<<<<<<< HEAD
                 if (error != null) ...[
                   const SizedBox(height: 4),
                   Text(
@@ -207,6 +321,8 @@ class _DetectionUploaderState extends State<DetectionUploader> {
                     ),
                   ),
                 ],
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
               ],
             )
           : null,
@@ -242,7 +358,11 @@ class _DetectionUploaderState extends State<DetectionUploader> {
                 onPressed:
                     _isUploading || _selectedFiles.every((file) => file == null)
                         ? null
+<<<<<<< HEAD
                         : _startUpload,
+=======
+                        : _simulateUpload,
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
                 icon: const Icon(Icons.search),
                 label: Text(
                   _isUploading ? '分析中...' : '開始分析',

@@ -19,6 +19,7 @@ class PredictionResultPage extends StatelessWidget {
               _buildSummarySection(),
               const SizedBox(height: 24),
 <<<<<<< HEAD
+<<<<<<< HEAD
               _buildReportSection(context),
               const SizedBox(height: 24),
               _buildDetailList(),
@@ -36,11 +37,16 @@ class PredictionResultPage extends StatelessWidget {
                 ),
               ),
 =======
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
               _buildModelMetricsSection(),
               const SizedBox(height: 24),
               _buildReportSection(context),
               const SizedBox(height: 24),
               _buildDetailList(),
+<<<<<<< HEAD
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
+=======
 >>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
             ],
           ),
@@ -81,7 +87,10 @@ class PredictionResultPage extends StatelessWidget {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   Widget _buildModelMetricsSection() {
     return Card(
       elevation: 2,
@@ -110,6 +119,9 @@ class PredictionResultPage extends StatelessWidget {
     );
   }
 
+<<<<<<< HEAD
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
+=======
 >>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   Widget _buildReportSection(BuildContext context) {
     return Card(

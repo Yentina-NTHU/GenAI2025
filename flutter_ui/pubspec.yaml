@@ -32,8 +32,14 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
 <<<<<<< HEAD
+<<<<<<< HEAD
   aws_s3_upload_lite: ^0.1.6
   minio: any
+=======
+  amplify_flutter: ^2.6.1
+  amplify_auth_cognito: ^2.6.1
+  amplify_storage_s3: ^2.6.1
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
 =======
   amplify_flutter: ^2.6.1
   amplify_auth_cognito: ^2.6.1

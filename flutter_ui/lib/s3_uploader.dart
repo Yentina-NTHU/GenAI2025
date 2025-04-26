@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'training_page.dart';
+<<<<<<< HEAD
 import 'package:aws_s3_upload_lite/aws_s3_upload_lite.dart';
 import 'dart:io';
+=======
+>>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
 
 class FileType {
   final String name;
@@ -32,6 +35,7 @@ class _S3UploaderState extends State<S3Uploader> {
       name: '帳戶資料',
       icon: Icons.account_balance,
       s3Path: '',
+
     ),
     FileType(
       name: '用戶資料',
