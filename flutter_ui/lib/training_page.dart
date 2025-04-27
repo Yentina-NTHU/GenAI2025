@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class TrainingPage extends StatefulWidget {
   const TrainingPage({super.key});
@@ -19,7 +21,7 @@ class _TrainingPageState extends State<TrainingPage> {
   @override
   void initState() {
     super.initState();
-    _startTraining();
+    Future.microtask(() => _startTraining());
   }
 
   @override
@@ -28,10 +30,23 @@ class _TrainingPageState extends State<TrainingPage> {
     super.dispose();
   }
 
-  void _startTraining() {
+  Future<void> _startTraining() async {
     const totalSteps = 100;
     int currentStep = 0;
-
+    const url =
+        'http://ec2-54-191-69-17.us-west-2.compute.amazonaws.com:5000/train';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print('成功: ${response.body}');
+        final data = jsonDecode(response.body); // 👈 把 body 轉成 Dart 物件
+        print('拿到的資料是: $data');
+      } else {
+        print('失敗: 狀態碼 ${response.statusCode}');
+      }
+    } catch (e) {
+      print('錯誤: $e');
+    }
     _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       if (currentStep >= totalSteps) {
         timer.cancel();

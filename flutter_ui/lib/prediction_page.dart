@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 import 'prediction_result_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PredictionPage extends StatefulWidget {
   const PredictionPage({super.key});
@@ -19,7 +21,7 @@ class _PredictionPageState extends State<PredictionPage> {
   @override
   void initState() {
     super.initState();
-    _startPrediction();
+    Future.microtask(() => _startPrediction());
   }
 
   @override
@@ -28,7 +30,22 @@ class _PredictionPageState extends State<PredictionPage> {
     super.dispose();
   }
 
-  void _startPrediction() {
+  Future<void> _startPrediction() async {
+    const url =
+        'http://ec2-54-191-69-17.us-west-2.compute.amazonaws.com:5000/inference';
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print('成功: ${response.body}');
+        final data = jsonDecode(response.body); // 👈 把 body 轉成 Dart 物件
+        print('拿到的資料是: $data');
+      } else {
+        print('失敗: 狀態碼 ${response.statusCode}');
+      }
+    } catch (e) {
+      print('錯誤: $e');
+    }
+
     const totalSteps = 100;
     int currentStep = 0;
 
