@@ -1,7 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:minio/minio.dart';
+import 'dart:io';
 
 class PredictionResultPage extends StatelessWidget {
-  const PredictionResultPage({super.key});
+  PredictionResultPage({super.key});
+
+  // 將 minio 定義為 final
+  final Minio minio = Minio(
+    endPoint: 'your-s3-endpoint-url.com',
+    accessKey: 'your-access-key',
+    secretKey: 'your-secret-key',
+    useSSL: false, // Set to true if your S3 server uses HTTPS
+  );
+
+  Future<File> downloadFromS3(String bucketName, String objectName) async {
+    try {
+      final response = await minio.getObject(bucketName, objectName);
+      final file = File('path_to_save_downloaded_file'); // 替換為您希望保存的文件路徑。
+
+      await response.pipe(file.openWrite());
+      return file;
+    } catch (e) {
+      print('Error downloading file: $e');
+      return Future.error(e); // 返回錯誤
+    }
+  }
+
+  Future<void> _downloadAndShare(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -16,38 +41,13 @@ class PredictionResultPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSummarySection(),
+              _buildSummarySection(context),
               const SizedBox(height: 24),
-<<<<<<< HEAD
-<<<<<<< HEAD
-              _buildReportSection(context),
-              const SizedBox(height: 24),
-              _buildDetailList(),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                icon: const Icon(Icons.home),
-                label: const Text('回首頁'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
-                    vertical: 16,
-                  ),
-                ),
-              ),
-=======
-=======
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
               _buildModelMetricsSection(),
               const SizedBox(height: 24),
               _buildReportSection(context),
               const SizedBox(height: 24),
               _buildDetailList(),
-<<<<<<< HEAD
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
-=======
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
             ],
           ),
         ),
@@ -55,7 +55,7 @@ class PredictionResultPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSummarySection() {
+  Widget _buildSummarySection(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -69,9 +69,7 @@ class PredictionResultPage extends StatelessWidget {
         const SizedBox(height: 16),
         Center(
           child: FilledButton.icon(
-            onPressed: () {
-              // TODO: 實作下載功能
-            },
+            onPressed: () => _downloadAndShare(context),
             icon: const Icon(Icons.download),
             label: const Text('下載 .csv檔'),
             style: FilledButton.styleFrom(
@@ -86,13 +84,8 @@ class PredictionResultPage extends StatelessWidget {
     );
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   Widget _buildModelMetricsSection() {
-    return Card(
+    return const Card(
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -119,10 +112,6 @@ class PredictionResultPage extends StatelessWidget {
     );
   }
 
-<<<<<<< HEAD
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
-=======
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
   Widget _buildReportSection(BuildContext context) {
     return Card(
       elevation: 2,
@@ -284,7 +273,7 @@ class PredictionResultPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       flex: 2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

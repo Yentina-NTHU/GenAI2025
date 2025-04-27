@@ -45,7 +45,7 @@ class _PredictionPageState extends State<PredictionPage> {
           if (mounted) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const PredictionResultPage(),
+                builder: (context) => PredictionResultPage(),
               ),
             );
           }

@@ -3,14 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  amplify_db_common
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
-=======
-  amplify_db_common
->>>>>>> 8ec415c3b0053254ff218eb4e1ec03df590486a3
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

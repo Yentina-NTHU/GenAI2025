@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'training_page.dart';
 import 'package:aws_s3_upload_lite/aws_s3_upload_lite.dart';
-import 'dart:io';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FileType {
   final String name;
@@ -50,6 +51,11 @@ class _S3UploaderState extends State<S3Uploader> {
     ),
   ];
 
+  final String _accessKey = dotenv.env['AWS_ACCESS_KEY_ID']!;
+  final String _secretKey = dotenv.env['AWS_SECRET_ACCESS_KEY']!;
+  final String _bucket = dotenv.env['AWS_BUCKET_NAME']!;
+  final String _region = dotenv.env['AWS_REGION']!;
+
   Future<void> _pickFile(int index) async {
     try {
       final result = await FilePicker.platform.pickFiles();
@@ -88,7 +94,6 @@ class _S3UploaderState extends State<S3Uploader> {
         final filePath = _selectedFiles[i]!.path;
         if (filePath == null) continue;
 
-        final file = File(filePath);
         final fileType = _fileTypes[i];
         try {
           await AwsS3.uploadUint8List(
