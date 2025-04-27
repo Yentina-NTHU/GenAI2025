@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:minio/minio.dart';
-import 'dart:io';
+import 'package:web/web.dart' as web;
 
 class PredictionResultPage extends StatelessWidget {
-  PredictionResultPage({super.key});
+  const PredictionResultPage({super.key});
 
-  // 將 minio 定義為 final
-  final Minio minio = Minio(
-    endPoint: 'your-s3-endpoint-url.com',
-    accessKey: 'your-access-key',
-    secretKey: 'your-secret-key',
-    useSSL: false, // Set to true if your S3 server uses HTTPS
-  );
+  Future<void> downloadFile(String fileUrl, String fileName) async {
+    final anchor = web.HTMLAnchorElement()
+      ..href = fileUrl
+      ..download = fileName
+      ..style.display = 'none';
 
-  Future<File> downloadFromS3(String bucketName, String objectName) async {
-    try {
-      final response = await minio.getObject(bucketName, objectName);
-      final file = File('path_to_save_downloaded_file'); // 替換為您希望保存的文件路徑。
-
-      await response.pipe(file.openWrite());
-      return file;
-    } catch (e) {
-      print('Error downloading file: $e');
-      return Future.error(e); // 返回錯誤
-    }
+    web.document.body?.append(anchor);
+    anchor.click();
+    anchor.remove();
   }
-
-  Future<void> _downloadAndShare(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +56,9 @@ class PredictionResultPage extends StatelessWidget {
         const SizedBox(height: 16),
         Center(
           child: FilledButton.icon(
-            onPressed: () => _downloadAndShare(context),
+            onPressed: () => downloadFile(
+                'https://hackthon0426.s3.us-west-2.amazonaws.com/prediction_result.csv',
+                'prediction_result.csv'),
             icon: const Icon(Icons.download),
             label: const Text('下載 .csv檔'),
             style: FilledButton.styleFrom(
